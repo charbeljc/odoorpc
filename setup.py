@@ -62,6 +62,9 @@ setuptools.setup(
     author_email=author_email,
     url=url,
     packages=['odoorpc', 'odoorpc.rpc'],
+    extras_require={
+        'orjson': ['orjson'],
+    },
     license=license,
     cmdclass=cmdclass,
     command_options=command_options,

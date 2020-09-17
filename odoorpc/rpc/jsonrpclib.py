@@ -3,7 +3,11 @@
 # License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl)
 """Provides the :class:`ProxyJSON` class for JSON-RPC requests."""
 import copy
-import json
+try:
+    import orjson as json
+except ImportError:
+    import json
+
 import logging
 import random
 import sys
@@ -113,7 +117,8 @@ class ProxyJSON(Proxy):
         response = self._opener.open(request, timeout=self._timeout)
         if not self._deserialize:
             return response
-        result = json.load(decode_data(response))
+        data = decode_data(response).read()
+        result = json.loads(data)
         logger.debug(
             LOG_JSON_RECV_MSG,
             {'url': full_url, 'data': log_data, 'result': result},
